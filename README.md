@@ -1,7 +1,7 @@
 ![kHttp](./docs/assets/khttp-android-logo.svg)
 
-## kHttp Android
-Lightweight HTTP requests library for Android.
+## kHttp 
+Lightweight HTTP requests library.
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.3.11-blue.svg?style=flat-square)](http://kotlinlang.org)
 [![RxJava](https://img.shields.io/badge/RxJava-2.1.10-green.svg?style=flat-square)](http://github.com/ReactiveX/RxJava)
