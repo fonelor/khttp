@@ -19,16 +19,7 @@ subprojects {
         }
 
         dependencies {
-            classpath config.build.gradle.androidPlugin
             classpath config.build.gradle.kotlin
-
-            // NOTE: Do not place your application configuration here; they belong
-            // in the individual module build.gradle files
-            classpath config.build.gradle.androidMaven
-            // Code coverage
-            classpath config.build.gradle.jacoco
-            // Library documentation
-            classpath config.build.gradle.dokka
         }
     }
 

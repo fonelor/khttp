@@ -36,10 +36,7 @@ def build = [
         jacocoAgentVersion: versions.jacoco,
 
         gradle: [
-                androidPlugin: 'com.android.tools.build:gradle:3.2.1',
-                androidMaven: 'com.github.dcendents:android-maven-gradle-plugin:2.0',
                 kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
-                jacoco: "org.jacoco:org.jacoco.core:${versions.jacoco}",
                 dokka: "org.jetbrains.dokka:dokka-android-gradle-plugin:${versions.dokka}"
         ]
 ]
@@ -55,10 +52,8 @@ def dependencies = [
 ]
 
 def testDependencies = [
-        instrumentationRunner: 'androidx.test.runner.AndroidJUnitRunner',
         junit: 'junit:junit:4.12',
         kotlin_test: "org.jetbrains.kotlin:kotlin-test:${versions.kotlin}",
-        robolectric: 'org.robolectric:robolectric:4.0'
 ]
 
 ext.config = [

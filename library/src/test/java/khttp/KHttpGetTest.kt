@@ -10,8 +10,6 @@ import khttp.structures.authorization.BasicAuthorization
 import org.json.JSONObject
 import org.junit.Ignore
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import java.io.IOException
 import java.net.MalformedURLException
 import java.net.SocketTimeoutException
@@ -22,7 +20,6 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-@RunWith(RobolectricTestRunner::class)
 class KHttpGetTest : KHttpTestBase() {
 
     @Test
