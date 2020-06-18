@@ -9,15 +9,14 @@ package khttp
 import khttp.extensions.fileLike
 import org.json.JSONArray
 import org.json.JSONObject
-import org.junit.Ignore
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import java.io.File
-import java.util.Base64
-import kotlin.test.*
+import java.util.*
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
-@RunWith(RobolectricTestRunner::class)
 class KHttpPostTest : KHttpTestBase() {
 
     @Test
@@ -42,27 +41,11 @@ class KHttpPostTest : KHttpTestBase() {
         assertEquals("d", form.getString("c"))
     }
 
-    @Test
-    fun doesJSONObjectBugExist() {
-        val jsonMap = mapOf("books" to listOf(mapOf("title" to "Pride and Prejudice", "author" to "Jane Austen")))
-
-        // {"books":"[{title=Pride and Prejudice, author=Jane Austen}]"}
-        val converted = JSONObject(jsonMap).toString()
-
-        // This assertion should pass because the list is being converted to a string.
-        assertNotEquals("{\"books\": [{\"title\": \"Pride and Prejudice\", \"author\": \"Jane Austen\"}] }", converted)
-        assertEquals("{\"books\":\"[{title=Pride and Prejudice, author=Jane Austen}]\"}", converted)
-    }
-
     /**
      * Need to clearly define what is accepted as a json input. It should just be a JSON string.
      *
-     * TODO: There seems to be a bug in the conversion of a list of maps into a proper JSONObject.
-     * The test case to verify that the bug still exists is aptly named [doesJSONObjectBugExist].
-     * </pre>
      */
     @Test
-    @Ignore
     fun withJsonData() {
         val jsonMap = mapOf("books" to listOf(mapOf("title" to "Pride and Prejudice", "author" to "Jane Austen")))
         val response = post(url = "https://httpbin.org/post",

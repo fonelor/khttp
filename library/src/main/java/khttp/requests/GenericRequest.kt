@@ -6,7 +6,7 @@
 
 package khttp.requests
 
-import android.util.JsonWriter
+import com.google.gson.stream.JsonWriter
 import khttp.extensions.putAllIfAbsentWithNull
 import khttp.extensions.writeAndFlush
 import khttp.structures.authorization.Authorization
@@ -23,7 +23,7 @@ import java.net.IDN
 import java.net.URI
 import java.net.URL
 import java.net.URLDecoder
-import java.util.UUID
+import java.util.*
 
 class GenericRequest internal constructor(
         override val method: String,

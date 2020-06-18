@@ -16,13 +16,15 @@ import khttp.structures.cookie.CookieJar
 import khttp.structures.maps.CaseInsensitiveMap
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.*
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.ProtocolException
 import java.net.URL
 import java.net.URLConnection
 import java.nio.charset.Charset
-import java.util.Collections
+import java.util.*
 import java.util.zip.GZIPInputStream
 import java.util.zip.InflaterInputStream
 
@@ -31,7 +33,7 @@ class GenericResponse internal constructor(override val request: Request) : Resp
     internal companion object {
 
         internal val HttpURLConnection.cookieJar: CookieJar
-            get() = CookieJar(*this.headerFields.filter { it.key == "Set-Cookie" }.flatMap { it.value }.filter(String::isNotEmpty).map(::Cookie).toTypedArray())
+            get() = CookieJar(*this.headerFields.filter { "Set-Cookie".equals(it.key, true) }.flatMap { it.value }.filter(String::isNotEmpty).map(::Cookie).toTypedArray())
 
         private fun HttpURLConnection.forceMethod(method: String) {
             try {
@@ -101,11 +103,11 @@ class GenericResponse internal constructor(override val request: Request) : Resp
                         connection.doOutput = true
                     }
                     // Write out the file in 4KiB chunks
-                    input.use { input ->
+                    input.use { i ->
                         connection.outputStream.use { output ->
-                            while (input.available() > 0) {
+                            while (i.available() > 0) {
                                 output.write(
-                                        ByteArray(Math.min(4096, input.available())).apply { input.read(this) }
+                                        ByteArray(4096.coerceAtMost(i.available())).apply { i.read(this) }
                                 )
                             }
                         }
@@ -363,6 +365,7 @@ class GenericResponse internal constructor(override val request: Request) : Resp
     private fun updateRequestHeaders() {
         val headers = (this.request.headers as MutableMap<String, String>)
         val requests = this.connection.javaClass.getField("requests", this.connection) ?: return
+
         @Suppress("UNCHECKED_CAST")
         val requestsHeaders = requests.javaClass.getDeclaredMethod("getHeaders").apply { this.isAccessible = true }.invoke(requests) as Map<String, List<String>>
         headers += requestsHeaders.filterValues { it.isNotEmpty() }.mapValues { it.value.joinToString(", ") }
