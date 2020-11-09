@@ -21,19 +21,19 @@ class KHttpPostTest : KHttpTestBase() {
 
     @Test
     fun postRawData() {
-        var response = post(url = "https://httpbin.org/post",
+        var response = post(url = "$host/post",
                 data = "Hello, world!")
 
         assertEquals("Hello, world!", response.jsonObject.getString("data"))
 
-        response = post(url = "https://httpbin.org/post",
+        response = post(url = "$host/post",
                 data = "a=b&c=d")
         assertEquals("a=b&c=d", response.jsonObject.getString("data"))
     }
 
     @Test
     fun withFormData() {
-        val response = post(url = "https://httpbin.org/post",
+        val response = post(url = "$host/post",
                 data = mapOf("a" to "b", "c" to "d"))
 
         val form = response.jsonObject.getJSONObject("form")
@@ -48,7 +48,7 @@ class KHttpPostTest : KHttpTestBase() {
     @Test
     fun withJsonData() {
         val jsonMap = mapOf("books" to listOf(mapOf("title" to "Pride and Prejudice", "author" to "Jane Austen")))
-        val response = post(url = "https://httpbin.org/post",
+        val response = post(url = "$host/post",
                 json = jsonMap)
 
         val returnedJSON = response.jsonObject.getJSONObject("json")
@@ -66,7 +66,7 @@ class KHttpPostTest : KHttpTestBase() {
     @Test
     fun withListJsonData() {
         val jsonList = listOf("A thing", "another thing")
-        val response = post(url = "https://httpbin.org/post",
+        val response = post(url = "$host/post",
                 json = jsonList)
 
         val returnedJSON = response.jsonObject.getJSONArray("json")
@@ -77,7 +77,7 @@ class KHttpPostTest : KHttpTestBase() {
     @Test
     fun withArrayListJsonData() {
         val jsonArray = arrayListOf("A thing", "another thing")
-        val response = post(url = "https://httpbin.org/post",
+        val response = post(url = "$host/post",
                 json = jsonArray)
 
         val returnedJSON = response.jsonObject.getJSONArray("json")
@@ -88,7 +88,7 @@ class KHttpPostTest : KHttpTestBase() {
     @Test
     fun withJsonObjectData() {
         val jsonObject = JSONObject("""{"valid": true}""")
-        val response = post(url = "https://httpbin.org/post",
+        val response = post(url = "$host/post",
                 json = jsonObject)
 
         val returnedJSON = response.jsonObject.getJSONObject("json")
@@ -98,7 +98,7 @@ class KHttpPostTest : KHttpTestBase() {
     @Test
     fun withJsonArrayData() {
         val jsonObject = JSONArray("[true]")
-        val response = post(url = "https://httpbin.org/post",
+        val response = post(url = "$host/post",
                 json = jsonObject)
 
         val returnedJSON = response.jsonObject.getJSONArray("json")
@@ -108,7 +108,7 @@ class KHttpPostTest : KHttpTestBase() {
     @Test
     fun withInvalidJson() {
         assertFailsWith(IllegalArgumentException::class) {
-            post(url = "https://httpbin.org/post",
+            post(url = "$host/post",
                     json = object {})
         }
     }
@@ -116,7 +116,7 @@ class KHttpPostTest : KHttpTestBase() {
     @Test
     fun fileUploadWithoutFormParameters() {
         val file = "hello".fileLike("derp")
-        val response = post(url = "https://httpbin.org/post",
+        val response = post(url = "$host/post",
                 files = listOf(file))
 
         val files = response.jsonObject.getJSONObject("files")
@@ -129,7 +129,7 @@ class KHttpPostTest : KHttpTestBase() {
     fun fileUploadWithFormParameters() {
         val file = "hello".fileLike("derp")
         val params = mapOf("top" to "kek")
-        val response = post(url = "https://httpbin.org/post",
+        val response = post(url = "$host/post",
                 files = listOf(file),
                 data = params)
 
@@ -148,7 +148,7 @@ class KHttpPostTest : KHttpTestBase() {
     fun streamingFileUpload() {
         // Get our file to stream (a beautiful rare pepe)
         val file = File("src/test/res/rarest_of_pepes.png")
-        val response = post(url = "https://httpbin.org/post",
+        val response = post(url = "$host/post",
                 data = file)
 
         val data = response.jsonObject.getString("data")
@@ -163,7 +163,7 @@ class KHttpPostTest : KHttpTestBase() {
     fun streamingInputStreamUpload() {
         val file = File("src/test/res/rarest_of_pepes.png")
         val inputStream = file.inputStream()
-        val response = post(url = "https://httpbin.org/post",
+        val response = post(url = "$host/post",
                 data = inputStream)
 
         val data = response.jsonObject.getString("data")
@@ -177,7 +177,7 @@ class KHttpPostTest : KHttpTestBase() {
     @Test
     fun withJson() {
         val expected = """{"test":true}"""
-        val response = post(url = "https://httpbin.org/post",
+        val response = post(url = "$host/post",
                 json = mapOf("test" to true))
 
         assertEquals(expected, response.request.body.toString(Charsets.UTF_8))

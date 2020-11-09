@@ -9,13 +9,15 @@ package khttp
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class KHttpPatchTest : KHttpTestBase() {
+class KHttpDeleteTest : KHttpTestBase() {
 
     @Test
     fun validateResponse() {
-        val url = "https://httpbin.org/patch"
-        val response = patch(url = url)
+        val url = "$host/delete"
 
-        assertEquals(url, response.jsonObject.getString("url"))
+        val result = delete(url = url)
+
+        assertEquals(200, result.statusCode)
+        assertEquals(result.jsonObject.getString("url"), url)
     }
 }

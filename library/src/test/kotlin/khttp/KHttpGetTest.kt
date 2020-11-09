@@ -24,8 +24,7 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun validateResponse() {
-
-        val url = "https://httpbin.org/range/26"
+        val url = "$host/range/26"
         val response = get(url = url)
 
         assertEquals("abcdefghijklmnopqrstuvwxyz", response.text, "The text of the result should equal the alphabet in lowercase.")
@@ -36,7 +35,7 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun validateParameters() {
-        val response = get(url = "https://httpbin.org/get",
+        val response = get(url = "$host/get",
                 params = mapOf("a" to "b", "c" to "d"))
 
         val args = response.jsonObject.getJSONObject("args")
@@ -46,7 +45,7 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun basicAuth() {
-        val response = get(url = "https://httpbin.org/basic-auth/khttp/isawesome",
+        val response = get(url = "$host/basic-auth/khttp/isawesome",
                 auth = BasicAuthorization("khttp", "isawesome"))
 
         assertTrue(response.jsonObject.getBoolean("authenticated"))
@@ -56,7 +55,7 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun cookies() {
-        val response = get(url = "https://httpbin.org/cookies",
+        val response = get(url = "$host/cookies",
                 cookies = mapOf("test" to "success"))
 
         val cookies = response.jsonObject.getJSONObject("cookies")
@@ -65,28 +64,28 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun redirects() {
-        val response = get(url = "https://httpbin.org/redirect-to?url=https://httpbin.org/get")
+        val response = get(url = "$host/redirect-to?url=$host/get")
 
-        assertEquals("https://httpbin.org/get", response.jsonObject.getString("url"))
+        assertEquals("$host/get", response.jsonObject.getString("url"))
     }
 
     @Test
     fun redirectsWith307() {
-        val response = get(url = "https://httpbin.org/redirect-to?status_code=307&url=https://httpbin.org/get")
+        val response = get(url = "$host/redirect-to?status_code=307&url=$host/get")
 
-        assertEquals("https://httpbin.org/get", response.jsonObject.getString("url"))
+        assertEquals("$host/get", response.jsonObject.getString("url"))
     }
 
     @Test
     fun redirectsWith308() {
-        val response = get(url = "https://httpbin.org/redirect-to?status_code=308&url=https://httpbin.org/get")
+        val response = get(url = "$host/redirect-to?status_code=308&url=$host/get")
 
-        assertEquals("https://httpbin.org/get", response.jsonObject.getString("url"))
+        assertEquals("$host/get", response.jsonObject.getString("url"))
     }
 
     @Test
     fun redirectsWithRedirectsDisallowed() {
-        val response = get(url = "https://httpbin.org/redirect-to?url=https://httpbin.org/get",
+        val response = get(url = "$host/redirect-to?url=$host/get",
                 allowRedirects = false)
 
         assertEquals(302, response.statusCode)
@@ -94,7 +93,7 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun redirectsWith307WithRedirectsDisallowed() {
-        val response = get(url = "https://httpbin.org/redirect-to?status_code=307&url=https://httpbin.org/get",
+        val response = get(url = "$host/redirect-to?status_code=307&url=$host/get",
                 allowRedirects = false)
 
         assertEquals(307, response.statusCode)
@@ -102,7 +101,7 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun redirectsWith308WithRedirectsDisallowed() {
-        val response = get(url = "https://httpbin.org/redirect-to?status_code=308&url=https://httpbin.org/get",
+        val response = get(url = "$host/redirect-to?status_code=308&url=$host/get",
                 allowRedirects = false)
 
         assertEquals(308, response.statusCode)
@@ -110,15 +109,15 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun multipleRedirects() {
-        val response = get(url = "https://httpbin.org/redirect/5")
+        val response = get(url = "$host/redirect/5")
 
-        assertEquals("https://httpbin.org/get", response.jsonObject.getString("url"))
+        assertEquals("$host/get", response.jsonObject.getString("url"))
     }
 
     @Test
     fun timeout() {
         assertFailsWith(SocketTimeoutException::class) {
-            get(url = "https://httpbin.org/delay/10",
+            get(url = "$host/delay/10",
                     timeout = 1.0)
         }
     }
@@ -127,7 +126,7 @@ class KHttpGetTest : KHttpTestBase() {
     fun setCookiesWithoutRedirects() {
         val cookieName = "test"
         val cookieValue = "quite"
-        val response = get(url = "https://httpbin.org/cookies/set?$cookieName=$cookieValue",
+        val response = get(url = "$host/cookies/set?$cookieName=$cookieValue",
                 allowRedirects = false)
 
         val cookies = response.cookies
@@ -146,7 +145,7 @@ class KHttpGetTest : KHttpTestBase() {
     fun setCookieWithRedirects() {
         val cookieName = "test"
         val cookieValue = "quite"
-        val response = get(url = "https://httpbin.org/cookies/set?$cookieName=$cookieValue")
+        val response = get(url = "$host/cookies/set?$cookieName=$cookieValue")
 
         val cookies = response.cookies
         assertEquals(1, cookies.size)
@@ -166,7 +165,7 @@ class KHttpGetTest : KHttpTestBase() {
         val cookieValueOne = "quite"
         val cookieNameTwo = "derp"
         val cookieValueTwo = "herp"
-        val response = get(url = "https://httpbin.org/cookies/set?$cookieNameOne=$cookieValueOne&$cookieNameTwo=$cookieValueTwo")
+        val response = get(url = "$host/cookies/set?$cookieNameOne=$cookieValueOne&$cookieNameTwo=$cookieValueTwo")
 
         val cookies = response.cookies
         assertEquals(2, cookies.size)
@@ -190,7 +189,7 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun gzip() {
-        val response = get(url = "https://httpbin.org/gzip")
+        val response = get(url = "$host/gzip")
 
         assertTrue(response.raw is GZIPInputStream)
         assertTrue(response.jsonObject.getBoolean("gzipped"))
@@ -198,7 +197,7 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun deflate() {
-        val response = get(url = "https://httpbin.org/deflate")
+        val response = get(url = "$host/deflate")
 
         assertTrue(response.raw is InflaterInputStream)
         assertTrue(response.jsonObject.getBoolean("deflated"))
@@ -206,14 +205,14 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun requestWith418() {
-        val response = get(url = "https://httpbin.org/status/418")
+        val response = get(url = "$host/status/418")
 
         assertEquals(418, response.statusCode)
         assertTrue(response.text.contains("teapot"))
     }
 
     fun requestForUTF8Document() {
-        val response = get(url = "https://httpbin.org/encoding/utf8")
+        val response = get(url = "$host/encoding/utf8")
 
         assertEquals(Charsets.UTF_8, response.encoding)
         assertTrue(response.text.contains("∮"))
@@ -232,17 +231,10 @@ class KHttpGetTest : KHttpTestBase() {
     @Test
     fun userAgent() {
         val userAgent = "khttp/test"
-        val response = get(url = "https://httpbin.org/user-agent",
+        val response = get(url = "$host/user-agent",
                 headers = mapOf("User-Agent" to userAgent))
 
         assertEquals(userAgent, response.jsonObject.getString("user-agent"))
-    }
-
-    @Test
-    fun requestWithAPort() {
-        val response = get(url = "https://httpbin.org:443/get")
-
-        assertNotNull(response.jsonObject)
     }
 
     @Test
@@ -252,16 +244,9 @@ class KHttpGetTest : KHttpTestBase() {
         assertEquals(10, response.jsonArray.length())
     }
 
-    @Test(expected = IOException::class)
-    fun nonStreamingRequest() {
-        val response = get(url = "https://httpbin.org/get")
-
-        response.raw.available()
-    }
-
     @Test
     fun streamingRequest() {
-        val response = get(url = "https://httpbin.org/get",
+        val response = get(url = "$host/get",
                 stream = true)
 
         assertTrue(response.raw.available() > 0)
@@ -269,7 +254,7 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun streamingRequestWithStreamingLineResponse() {
-        val response = get(url = "https://httpbin.org/stream/4",
+        val response = get(url = "$host/stream/4",
                 stream = true)
 
         val iterator = response.lineIterator()
@@ -285,7 +270,7 @@ class KHttpGetTest : KHttpTestBase() {
     @Test
     @Ignore
     fun streamingRequestWithStreamingByteResponse() {
-        val response = get(url = "https://httpbin.org/stream-bytes/4?seed=1",
+        val response = get(url = "$host/stream-bytes/4?seed=1",
                 stream = true)
 
         val iterator = response.contentIterator(chunkSize = 1)
@@ -302,7 +287,7 @@ class KHttpGetTest : KHttpTestBase() {
     @Test
     @Ignore
     fun streamingRequestWithoutEvenLines() {
-        val url = "https://httpbin.org/bytes/1690?seed=1"
+        val url = "$host/bytes/1690?seed=1"
         val response = get(url = url,
                 stream = true)
 
@@ -315,7 +300,7 @@ class KHttpGetTest : KHttpTestBase() {
 
     @Test
     fun requestWithSpaceInUrl() {
-        val url = "https://httpbin.org/anything/some text"
+        val url = "$host/anything/some text"
         val response = get(url)
 
         assertEquals(url, response.jsonObject.getString("url"))

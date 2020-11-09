@@ -16,14 +16,14 @@ class KHttpHeadTest : KHttpTestBase() {
     @Test
     @Ignore
     fun validateResponse() {
-        val response = head(url = "https://httpbin.org/get")
+        val response = head(url = "$host/get")
 
         assertEquals(200, response.statusCode)
     }
 
     @Test
     fun redirectWithRedirectsDisallowed() {
-        val response = head(url = "https://httpbin.org/redirect/2")
+        val response = head(url = "$host/redirect/2")
 
         assertEquals(302, response.statusCode)
     }
@@ -31,7 +31,7 @@ class KHttpHeadTest : KHttpTestBase() {
     @Test
     @Ignore
     fun redirect() {
-        val response = head(url = "https://httpbin.org/redirect/2",
+        val response = head(url = "$host/redirect/2",
                 allowRedirects = true)
 
         assertEquals(200, response.statusCode)

@@ -95,7 +95,7 @@ class CookieJarTest : KHttpTestBase() {
         assertNull(cookieValue)
 
         originalSize = cookieJar.size
-        val removed: Any? = (cookieJar as MutableMap<Any?, String>).remove(null)
+        val removed: Any? = (cookieJar as MutableMap<*, *>).remove(null)
         assertEquals(originalSize, cookieJar.size)
         assertNull(removed)
     }

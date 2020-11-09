@@ -18,14 +18,14 @@ kHttp Android (pre-)releases are available via JitPack. It is recommended that  
 > **Tip:** Test out the canary channel to try out features by using the latest develop snapshot; `develop-SNAPSHOT`.
 
 ```Groovy
-// Project level build.gradle
+// Project level build.gradle.kts
 // ...
 repositories {
     maven { url 'https://jitpack.io' }
 }
 // ...
 
-// Module level build.gradle
+// Module level build.gradle.kts
 dependencies {
     // Replace version with release version, e.g. 1.0.0-alpha, -SNAPSHOT
     implementation "io.karn:khttp-android:[VERSION]"

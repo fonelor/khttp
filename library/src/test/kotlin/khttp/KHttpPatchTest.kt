@@ -9,12 +9,12 @@ package khttp
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class KHttpPutTest : KHttpTestBase() {
+class KHttpPatchTest : KHttpTestBase() {
 
     @Test
-    fun validateRequest() {
-        val url = "https://httpbin.org/put"
-        val response = put(url = url)
+    fun validateResponse() {
+        val url = "$host/patch"
+        val response = patch(url = url)
 
         assertEquals(url, response.jsonObject.getString("url"))
     }

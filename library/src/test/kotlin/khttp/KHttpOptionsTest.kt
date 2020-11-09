@@ -13,7 +13,7 @@ class KHttpOptionsTest : KHttpTestBase() {
 
     @Test
     fun validateResponse() {
-        val response = options(url = "https://httpbin.org/get")
+        val response = options(url = "$host/get")
 
         assertEquals(200, response.statusCode)
     }
